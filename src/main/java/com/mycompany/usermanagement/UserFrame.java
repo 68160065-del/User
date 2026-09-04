@@ -82,6 +82,7 @@ public class UserFrame extends javax.swing.JFrame {
             }
         };
         tblUser.setModel(model);
+        EnableForm(false);
     }
 
     /**
@@ -321,7 +322,19 @@ public class UserFrame extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         index = -1;
         edtLogin.requestFocus();
+        boolean status = true;
+        EnableForm(status);
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void EnableForm(boolean status) {
+        edtLogin.setEditable(status);
+        edtName.setEditable(status);
+        edtPassword.setEditable(status);
+        rdoFemale.setEnabled(status);
+        rdoMale.setEnabled(status);
+        btnSave.setEnabled(status);
+        btnClear.setEnabled(status);
+    }
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         clearform();
@@ -361,6 +374,7 @@ public class UserFrame extends javax.swing.JFrame {
         
         model.fireTableDataChanged();
         clearform();
+        EnableForm(false);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -381,7 +395,7 @@ public class UserFrame extends javax.swing.JFrame {
         }
         lblID.setText("ID : "+editedUer.getId());
         edtLogin.requestFocus();
-        
+        EnableForm(true);
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
