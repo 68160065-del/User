@@ -4,10 +4,12 @@
  */
 package com.mycompany.usermanagement;
 
-/**
- *
+ /*
  * @author informatics
  */
+
+import javax.swing.table.AbstractTableModel;
+
 public class UserFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserFrame.class.getName());
@@ -17,6 +19,66 @@ public class UserFrame extends javax.swing.JFrame {
      */
     public UserFrame() {
         initComponents();
+        load();
+    }
+    
+    public void load(){
+        tblUser.setModel(new AbstractTableModel() {
+            @Override
+            public String getColumnName(int column) {
+                switch(column){
+                    case 0:
+                        return "ID";
+                    case 1:
+                        return "LOGIN";
+                    case 2:
+                        return "NAME";
+                    case 3:
+                        return "ROLE";
+                    case 4:
+                        return "GENDER";
+                    default:
+                        return "";
+                }
+            }
+            
+            @Override
+            public int getRowCount() {
+                return UserService.getSize();
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 5;
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                User user = UserService.getUser(rowIndex);
+                switch(columnIndex){
+                    case 0:
+                        return user.getId();
+                    case 1:
+                        return user.getLogin();
+                    case 2:
+                        return user.getName();
+                    case 3:
+                        if(user.getRole()=='A'){
+                            return "Admin";
+                        }else{
+                            return "User";
+                        }
+                    case 4:
+                        if(user.getGender()=='M'){
+                            return "Male";
+                        }else{
+                            return "Female";
+                        }
+                    default:
+                        return "";
+                }
+            }
+        });
     }
 
     /**
