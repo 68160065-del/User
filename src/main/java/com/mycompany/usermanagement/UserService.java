@@ -29,7 +29,12 @@ public class UserService {
     }
     
     public static User getUserByID(int id){
-        return userList.get(id);
+        for(User u: userList){
+            if(u.getId() == id){
+                return u;
+            }
+        }
+        return null;
     }
     
     public static int getSize(){
