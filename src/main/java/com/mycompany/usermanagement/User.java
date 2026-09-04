@@ -8,7 +8,9 @@ package com.mycompany.usermanagement;
  *
  * @author informatics
  */
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
     private int id;
     private String login;
     private String name;
@@ -71,6 +73,11 @@ public class User {
 
     public void setRole(char role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", login=" + login + ", name=" + name + ", password=" + password + ", gender=" + gender + ", role=" + role + '}';
     }
     
     
