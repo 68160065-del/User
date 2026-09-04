@@ -13,6 +13,7 @@ import javax.swing.table.AbstractTableModel;
 public class UserFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserFrame.class.getName());
+    private AbstractTableModel model;
 
     /**
      * Creates new form UserFrame
@@ -23,7 +24,7 @@ public class UserFrame extends javax.swing.JFrame {
     }
     
     public void load(){
-        tblUser.setModel(new AbstractTableModel() {
+        model = new AbstractTableModel() {
             @Override
             public String getColumnName(int column) {
                 switch(column){
@@ -78,7 +79,8 @@ public class UserFrame extends javax.swing.JFrame {
                         return "";
                 }
             }
-        });
+        };
+        tblUser.setModel(model);
     }
 
     /**
@@ -314,8 +316,17 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+        clearform();
     }//GEN-LAST:event_btnClearActionPerformed
+
+    private void clearform() {
+        edtLogin.setText("");
+        edtName.setText("");
+        edtPassword.setText("");
+        cmdRole.setSelectedIndex(1);
+        rdoMale.setSelected(true);
+        edtLogin.requestFocus();
+    }
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         
@@ -332,7 +343,9 @@ public class UserFrame extends javax.swing.JFrame {
             r = 'A';
         }
         User user = new User(-1,login,name,password,g,r);
-        System.out.println(user);
+        UserService.addUser(user);
+        model.fireTableDataChanged();
+        clearform();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
