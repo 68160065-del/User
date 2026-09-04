@@ -105,7 +105,7 @@ public class UserFrame extends javax.swing.JFrame {
         rdoMale = new javax.swing.JRadioButton();
         rdoFemale = new javax.swing.JRadioButton();
         lblRole = new javax.swing.JLabel();
-        cmdRole = new javax.swing.JComboBox<>();
+        cmbRole = new javax.swing.JComboBox<>();
         btnSave = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -143,8 +143,8 @@ public class UserFrame extends javax.swing.JFrame {
         lblRole.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblRole.setText("Role");
 
-        cmdRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
-        cmdRole.setSelectedIndex(1);
+        cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
+        cmbRole.setSelectedIndex(1);
 
         btnSave.setText("Save");
         btnSave.addActionListener(this::btnSaveActionPerformed);
@@ -175,7 +175,7 @@ public class UserFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(edtPassword)
-                                    .addComponent(cmdRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(cmbRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -215,7 +215,7 @@ public class UserFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRole)
-                    .addComponent(cmdRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
@@ -257,6 +257,7 @@ public class UserFrame extends javax.swing.JFrame {
         btnAdd.addActionListener(this::btnAddActionPerformed);
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
 
         btnDelete.setText("Delete");
 
@@ -323,7 +324,7 @@ public class UserFrame extends javax.swing.JFrame {
         edtLogin.setText("");
         edtName.setText("");
         edtPassword.setText("");
-        cmdRole.setSelectedIndex(1);
+        cmbRole.setSelectedIndex(1);
         rdoMale.setSelected(true);
         edtLogin.requestFocus();
     }
@@ -337,7 +338,7 @@ public class UserFrame extends javax.swing.JFrame {
         if(rdoMale.isSelected()){
             g = 'M';
         }
-        String role = cmdRole.getSelectedItem().toString();
+        String role = cmbRole.getSelectedItem().toString();
         char r = 'U';
         if(role.equals("Admin")){
             r = 'A';
@@ -347,6 +348,26 @@ public class UserFrame extends javax.swing.JFrame {
         model.fireTableDataChanged();
         clearform();
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        int index = tblUser.getSelectedRow();
+        User editedUer = UserService.getUser(index);
+        edtName.setText(editedUer.getName());
+        edtLogin.setText(editedUer.getLogin());
+        edtPassword.setText(editedUer.getPassword());
+        if(editedUer.getGender()=='M'){
+            rdoMale.setSelected(true);
+        }else{
+            rdoFemale.setSelected(true);
+        }
+        if(editedUer.getRole()=='A'){
+            cmbRole.setSelectedIndex(0);
+        }else{
+            cmbRole.setSelectedIndex(1);
+        }
+        lblID.setText("ID : "+editedUer.getId());
+        edtLogin.requestFocus();
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,7 +400,7 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox<String> cmdRole;
+    private javax.swing.JComboBox<String> cmbRole;
     private javax.swing.JTextField edtLogin;
     private javax.swing.JTextField edtName;
     private javax.swing.JPasswordField edtPassword;
