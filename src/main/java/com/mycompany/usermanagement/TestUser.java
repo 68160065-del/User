@@ -30,7 +30,10 @@ public class TestUser {
         UserService.addUser(user1);
         UserService.addUser(user2);
         System.out.println("***********************");
+        UserService.printList();
         
+        System.out.println(UserService.getUserByID(3));
+        UserService.deleteUser(1);
         UserService.printList();
     }
-}
+}    
