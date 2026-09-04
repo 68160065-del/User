@@ -41,6 +41,9 @@ public class UserService {
         return user;
     }
     
+    public static User deleteUser(int index){ 
+        return userList.remove(index);
+    }
     
     public static void printList(){
         ArrayList<User> list = UserService.getUser();
