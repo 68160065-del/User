@@ -14,6 +14,7 @@ public class UserFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserFrame.class.getName());
     private AbstractTableModel model;
+    private int index = -1;
 
     /**
      * Creates new form UserFrame
@@ -189,9 +190,9 @@ public class UserFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(rdoFemale))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(379, 379, 379)
+                        .addGap(367, 367, 367)
                         .addComponent(btnSave)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnClear)))
                 .addContainerGap(379, Short.MAX_VALUE))
         );
@@ -216,11 +217,15 @@ public class UserFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRole)
                     .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave)
-                    .addComponent(btnClear))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnClear)
+                        .addContainerGap(14, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSave)
+                        .addContainerGap())))
         );
 
         jPanel2.setBackground(new java.awt.Color(204, 255, 204));
@@ -260,6 +265,7 @@ public class UserFrame extends javax.swing.JFrame {
         btnEdit.addActionListener(this::btnEditActionPerformed);
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -313,7 +319,8 @@ public class UserFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        index = -1;
+        edtLogin.requestFocus();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -343,14 +350,21 @@ public class UserFrame extends javax.swing.JFrame {
         if(role.equals("Admin")){
             r = 'A';
         }
-        User user = new User(-1,login,name,password,g,r);
-        UserService.addUser(user);
+        if(index == -1){
+            User user = new User(-1,login,name,password,g,r);
+            UserService.addUser(user);
+        }else{
+            int id = UserService.getUser(index).getId();
+            User user = new User (id,login,name,password,g,r);
+            UserService.updateUser(index, user);
+        }
+        
         model.fireTableDataChanged();
         clearform();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        int index = tblUser.getSelectedRow();
+        index = tblUser.getSelectedRow();
         User editedUer = UserService.getUser(index);
         edtName.setText(editedUer.getName());
         edtLogin.setText(editedUer.getLogin());
@@ -367,7 +381,14 @@ public class UserFrame extends javax.swing.JFrame {
         }
         lblID.setText("ID : "+editedUer.getId());
         edtLogin.requestFocus();
+        
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        index = tblUser.getSelectedRow();
+        UserService.deleteUser(index);
+        model.fireTableDataChanged();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
